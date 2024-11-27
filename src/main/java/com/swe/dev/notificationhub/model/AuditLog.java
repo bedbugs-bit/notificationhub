@@ -1,6 +1,8 @@
 package com.swe.dev.notificationhub.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,15 +16,19 @@ public class AuditLog {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @NotNull
     @Column(nullable = false)
     private String channel;
 
+    @NotNull
     @Column(nullable = false)
     private Boolean enabled;
 
+    @NotNull
     @Column(nullable = false)
     private String operation;
 
+    @NotNull
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
@@ -36,7 +42,7 @@ public class AuditLog {
         this.timestamp = LocalDateTime.now();
     }
 
-    // Getters and Setters
+    // Getters
     public Long getId() {
         return id;
     }

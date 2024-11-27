@@ -15,9 +15,11 @@ public class NotificationPreference {
     private User user;
 
     @NotNull
+    @Column(nullable = false)
     private String channel;
 
     @NotNull
+    @Column(nullable = false)
     private Boolean enabled;
 
     public NotificationPreference() {}
@@ -43,8 +45,4 @@ public class NotificationPreference {
     public Boolean getEnabled() {
         return enabled;
     }
-
-
-
-
 }
