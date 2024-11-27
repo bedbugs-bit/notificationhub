@@ -16,12 +16,24 @@ public class NotificationPreferenceService {
         this.preferenceRepository = preferenceRepository;
     }
 
+    // Create a new preference for a user
     public NotificationPreference createPreference(User user, String channel, Boolean enabled) {
         NotificationPreference preference = new NotificationPreference(user, channel, enabled);
         return preferenceRepository.save(preference);
     }
 
+    // Get all preferences for a user
     public List<NotificationPreference> getPreferencesByUser(User user) {
-        return preferenceRepository.findAll(); // Filter by user in real implementation
+        return preferenceRepository.findAll().stream()
+                .filter(preference -> preference.getUser().getId().equals(user.getId()))
+                .toList();
+    }
+
+    // Get preferences by user and channel
+    public List<NotificationPreference> getPreferencesByUserAndChannel(User user, String channel) {
+        return preferenceRepository.findAll().stream()
+                .filter(preference -> preference.getUser().getId().equals(user.getId()) &&
+                        preference.getChannel().equalsIgnoreCase(channel))
+                .toList();
     }
 }
