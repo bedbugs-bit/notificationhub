@@ -11,15 +11,22 @@ import java.util.List;
 public class NotificationPreferenceService {
 
     private final NotificationPreferenceRepository preferenceRepository;
+    private final AuditLogService auditLogService;
 
-    public NotificationPreferenceService(NotificationPreferenceRepository preferenceRepository) {
+    public NotificationPreferenceService(NotificationPreferenceRepository preferenceRepository, AuditLogService auditLogService) {
         this.preferenceRepository = preferenceRepository;
+        this.auditLogService = auditLogService;
     }
 
     // Create a new preference for a user
     public NotificationPreference createPreference(User user, String channel, Boolean enabled) {
         NotificationPreference preference = new NotificationPreference(user, channel, enabled);
-        return preferenceRepository.save(preference);
+        NotificationPreference savedPreference = preferenceRepository.save(preference);
+
+        // Log the operation
+        auditLogService.log(user, channel, enabled, "CREATE");
+
+        return savedPreference;
     }
 
     // Get all preferences for a user
