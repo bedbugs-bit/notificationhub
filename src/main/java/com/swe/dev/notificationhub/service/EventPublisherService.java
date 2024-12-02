@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventPublisherService {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private static KafkaTemplate<String, String> kafkaTemplate = null;
 
     public EventPublisherService(KafkaTemplate<String, String> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
+        EventPublisherService.kafkaTemplate = kafkaTemplate;
     }
 
-    public void publishEvent(String topic, String message) {
+    public static void publishEvent(String topic, String message) {
         kafkaTemplate.send(topic, message);
     }
 }
