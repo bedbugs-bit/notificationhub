@@ -12,10 +12,12 @@ public class NotificationPreferenceService {
 
     private final NotificationPreferenceRepository preferenceRepository;
     private final AuditLogService auditLogService;
+    private final EventPublisherService eventPublisherService;
 
     public NotificationPreferenceService(NotificationPreferenceRepository preferenceRepository, AuditLogService auditLogService) {
         this.preferenceRepository = preferenceRepository;
         this.auditLogService = auditLogService;
+        this.eventPublisherService = eventPublisherService;
     }
 
     // Create a new preference for a user
@@ -23,6 +25,10 @@ public class NotificationPreferenceService {
         NotificationPreference preference = new NotificationPreference(user, channel, enabled);
         NotificationPreference savedPreference = preferenceRepository.save(preference);
 
+
+        // Publish Kafka event
+        eventPublisherService.publishEvent("preferences",
+                String.format("Preference created: User=%s, Channel=%s, Enabled=%s", user.getId(), channel, enabled));
         // Log the operation
         auditLogService.log(user, channel, enabled, "CREATE");
 
