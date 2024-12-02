@@ -58,7 +58,7 @@ class NotificationPreferenceServiceTest {
 
         // Then
         assertEquals(2, result.size());
-        assertEquals("EMAIL", result.get(0).getChannel());
+        assertEquals("EMAIL", result.getFirst().getChannel());
         verify(preferenceRepository, times(1)).findAll();
     }
 }
